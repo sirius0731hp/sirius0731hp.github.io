@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="{{ site.locale | default: 'en' }}">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>{{ page.title }} | {{ site.title }}</title>
+
+  <link rel="stylesheet"
+        href="{{ '/assets/css/main.css' | relative_url }}">
+
+  <style>
+    html,
+    body {
+      margin: 0;
+      background: #000;
+      color: #fff;
+    }
+
+    body {
+      font-family: Arial, Helvetica, sans-serif;
+    }
+
+    .gallery-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 32px 48px;
+    }
+
+    .gallery-header__title {
+      margin: 0;
+      color: #fff;
+      font-size: 0.85rem;
+      font-weight: 400;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+    }
+
+    .gallery-header__back {
+      color: #aaa;
+      font-size: 0.78rem;
+      letter-spacing: 0.08em;
+      text-decoration: none;
+      text-transform: uppercase;
+      transition: color 0.2s ease;
+    }
+
+    .gallery-header__back:hover {
+      color: #fff;
+    }
+
+    .gallery-main {
+      width: min(1500px, calc(100% - 96px));
+      margin: 60px auto 120px;
+    }
+
+    @media (max-width: 700px) {
+      .gallery-header {
+        padding: 24px 20px;
+      }
+
+      .gallery-main {
+        width: calc(100% - 32px);
+        margin-top: 36px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <header class="gallery-header">
+    <p class="gallery-header__title">Gallery</p>
+
+    <a class="gallery-header__back"
+       href="{{ '/' | relative_url }}">
+      Back
+    </a>
+  </header>
+
+  <main class="gallery-main">
+    {{ content }}
+  </main>
+</body>
+</html>
