@@ -1,0 +1,264 @@
+---
+layout: archive
+title: "Gallery"
+permalink: /gallery/
+author_profile: false
+---
+
+<script>
+  document.body.classList.add("gallery-page");
+</script>
+
+<p class="gallery-intro">
+  Selected photographs from places I have lived in and travelled through.
+</p>
+
+<div class="gallery-grid">
+  <button
+    class="gallery-item"
+    data-src="{{ '/images/gallery/hong-kong-01.jpg' | relative_url }}"
+    data-caption="Hong Kong, 2026"
+    type="button">
+    <img
+      src="{{ '/images/gallery/hong-kong-01.jpg' | relative_url }}"
+      alt="Hong Kong"
+      loading="lazy">
+  </button>
+
+  <button
+    class="gallery-item"
+    data-src="{{ '/images/gallery/hong-kong-02.jpg' | relative_url }}"
+    data-caption="Hong Kong, 2026"
+    type="button">
+    <img
+      src="{{ '/images/gallery/hong-kong-02.jpg' | relative_url }}"
+      alt="Hong Kong"
+      loading="lazy">
+  </button>
+
+  <button
+    class="gallery-item"
+    data-src="{{ '/images/gallery/hong-kong-03.jpg' | relative_url }}"
+    data-caption="Hong Kong, 2026"
+    type="button">
+    <img
+      src="{{ '/images/gallery/hong-kong-03.jpg' | relative_url }}"
+      alt="Hong Kong"
+      loading="lazy">
+  </button>
+
+  <button
+    class="gallery-item"
+    data-src="{{ '/images/gallery/hong-kong-04.jpg' | relative_url }}"
+    data-caption="Hong Kong, 2026"
+    type="button">
+    <img
+      src="{{ '/images/gallery/hong-kong-04.jpg' | relative_url }}"
+      alt="Hong Kong"
+      loading="lazy">
+  </button>
+</div>
+
+<div
+  class="gallery-lightbox"
+  id="gallery-lightbox"
+  role="dialog"
+  aria-modal="true"
+  aria-label="Photograph viewer">
+
+  <button class="lightbox-close" type="button" aria-label="Close">×</button>
+  <button class="lightbox-prev" type="button" aria-label="Previous">‹</button>
+
+  <figure>
+    <img id="lightbox-image" src="" alt="">
+    <figcaption id="lightbox-caption"></figcaption>
+  </figure>
+
+  <button class="lightbox-next" type="button" aria-label="Next">›</button>
+</div>
+
+<style>
+  body.gallery-page {
+    background: #111418;
+    color: #e8e8e8;
+  }
+
+  body.gallery-page .masthead,
+  body.gallery-page .masthead__inner-wrap,
+  body.gallery-page .greedy-nav,
+  body.gallery-page .page__footer {
+    background: #111418;
+  }
+
+  body.gallery-page .greedy-nav a,
+  body.gallery-page .page__title {
+    color: #e8e8e8;
+  }
+
+  .gallery-intro {
+    color: #aeb4bc;
+    margin-bottom: 2rem;
+  }
+
+  .gallery-grid {
+    columns: 3 280px;
+    column-gap: 16px;
+  }
+
+  .gallery-item {
+    display: block;
+    width: 100%;
+    padding: 0;
+    margin: 0 0 16px;
+    border: 0;
+    background: none;
+    cursor: zoom-in;
+    break-inside: avoid;
+  }
+
+  .gallery-item img {
+    display: block;
+    width: 100%;
+    height: auto;
+    border-radius: 4px;
+    transition: opacity 0.25s ease, transform 0.25s ease;
+  }
+
+  .gallery-item:hover img {
+    opacity: 0.88;
+    transform: scale(1.01);
+  }
+
+  .gallery-lightbox {
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    background: rgba(5, 7, 10, 0.97);
+  }
+
+  .gallery-lightbox.open {
+    display: flex;
+  }
+
+  .gallery-lightbox figure {
+    max-width: 88vw;
+    max-height: 90vh;
+    margin: 0;
+    text-align: center;
+  }
+
+  .gallery-lightbox img {
+    max-width: 88vw;
+    max-height: 82vh;
+    object-fit: contain;
+  }
+
+  .gallery-lightbox figcaption {
+    margin-top: 12px;
+    color: #c4c8ce;
+    font-size: 0.85rem;
+  }
+
+  .lightbox-close,
+  .lightbox-prev,
+  .lightbox-next {
+    position: fixed;
+    border: 0;
+    background: none;
+    color: #fff;
+    cursor: pointer;
+  }
+
+  .lightbox-close {
+    top: 20px;
+    right: 28px;
+    font-size: 2.2rem;
+  }
+
+  .lightbox-prev,
+  .lightbox-next {
+    top: 50%;
+    font-size: 3rem;
+    transform: translateY(-50%);
+  }
+
+  .lightbox-prev {
+    left: 24px;
+  }
+
+  .lightbox-next {
+    right: 24px;
+  }
+
+  @media (max-width: 700px) {
+    .gallery-grid {
+      columns: 2 140px;
+      column-gap: 10px;
+    }
+
+    .gallery-item {
+      margin-bottom: 10px;
+    }
+
+    .lightbox-prev {
+      left: 8px;
+    }
+
+    .lightbox-next {
+      right: 8px;
+    }
+  }
+</style>
+
+<script>
+  const galleryItems = [...document.querySelectorAll(".gallery-item")];
+  const lightbox = document.getElementById("gallery-lightbox");
+  const lightboxImage = document.getElementById("lightbox-image");
+  const lightboxCaption = document.getElementById("lightbox-caption");
+
+  let currentImage = 0;
+
+  function showImage(index) {
+    currentImage = (index + galleryItems.length) % galleryItems.length;
+    const item = galleryItems[currentImage];
+
+    lightboxImage.src = item.dataset.src;
+    lightboxCaption.textContent = item.dataset.caption || "";
+    lightbox.classList.add("open");
+    document.body.style.overflow = "hidden";
+  }
+
+  function closeLightbox() {
+    lightbox.classList.remove("open");
+    lightboxImage.src = "";
+    document.body.style.overflow = "";
+  }
+
+  galleryItems.forEach((item, index) => {
+    item.addEventListener("click", () => showImage(index));
+  });
+
+  document.querySelector(".lightbox-close")
+    .addEventListener("click", closeLightbox);
+
+  document.querySelector(".lightbox-prev")
+    .addEventListener("click", () => showImage(currentImage - 1));
+
+  document.querySelector(".lightbox-next")
+    .addEventListener("click", () => showImage(currentImage + 1));
+
+  lightbox.addEventListener("click", event => {
+    if (event.target === lightbox) closeLightbox();
+  });
+
+  document.addEventListener("keydown", event => {
+    if (!lightbox.classList.contains("open")) return;
+
+    if (event.key === "Escape") closeLightbox();
+    if (event.key === "ArrowLeft") showImage(currentImage - 1);
+    if (event.key === "ArrowRight") showImage(currentImage + 1);
+  });
+</script>
