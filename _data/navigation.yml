@@ -21,7 +21,7 @@ main:
   #  url: /teaching/    
 
   - title: "Gallery"
-  url: /gallery/
+    url: /gallery/
 
   #- title: "Blog Posts"
   #  url: /year-archive/
