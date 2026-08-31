@@ -369,6 +369,25 @@
         transition: none;
       }
     }
+    /* Remove the theme's orange focus frame */
+.gallery-item:focus,
+.gallery-item:active {
+  outline: none;
+  box-shadow: none;
+}
+
+/* Keep a minimal focus style for keyboard users */
+.gallery-item:focus-visible {
+  outline: 1px solid #fff;
+  outline-offset: 6px;
+  box-shadow: none;
+}
+
+.lightbox-close:focus,
+.lightbox-prev:focus,
+.lightbox-next:focus {
+  box-shadow: none;
+}
   </style>
 </head>
 
