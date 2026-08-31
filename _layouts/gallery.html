@@ -369,34 +369,64 @@
         transition: none;
       }
     }
-    /* Remove the theme's orange focus frame */
+   /* Remove the theme's orange focus frame */
+
 .gallery-item:focus,
 .gallery-item:active {
   outline: none;
   box-shadow: none;
 }
 
-/* Keep a minimal focus style for keyboard users */
 .gallery-item:focus-visible {
   outline: 1px solid #fff;
   outline-offset: 6px;
   box-shadow: none;
 }
 
+.gallery-header__back:focus {
+  outline: none;
+  box-shadow: none;
+}
+
+.gallery-header__back:focus-visible {
+  outline: 1px solid #fff;
+  outline-offset: 5px;
+}
+
 .lightbox-close:focus,
 .lightbox-prev:focus,
 .lightbox-next:focus {
+  outline: none;
   box-shadow: none;
 }
-    .gallery-header {
-  animation: gallery-header-in 0.6s ease-out both;
+
+.lightbox-close:focus-visible,
+.lightbox-prev:focus-visible,
+.lightbox-next:focus-visible {
+  outline: 1px solid #fff;
+  outline-offset: 2px;
+}
+
+
+/* Gallery-only transition */
+
+body {
+  animation: gallery-page-enter 0.55s ease-out both;
+}
+
+.gallery-header {
+  animation: gallery-content-enter 0.65s 0.08s ease-out both;
 }
 
 .gallery-main {
-  animation: gallery-content-in 0.7s 0.08s ease-out both;
+  animation: gallery-content-enter 0.7s 0.12s ease-out both;
 }
 
-@keyframes gallery-header-in {
+body.gallery-leaving {
+  animation: gallery-page-leave 0.35s ease-in forwards;
+}
+
+@keyframes gallery-page-enter {
   from {
     opacity: 0;
   }
@@ -406,10 +436,10 @@
   }
 }
 
-@keyframes gallery-content-in {
+@keyframes gallery-content-enter {
   from {
     opacity: 0;
-    transform: translateY(12px);
+    transform: translateY(10px);
   }
 
   to {
@@ -418,9 +448,21 @@
   }
 }
 
+@keyframes gallery-page-leave {
+  from {
+    opacity: 1;
+  }
+
+  to {
+    opacity: 0;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
+  body,
   .gallery-header,
-  .gallery-main {
+  .gallery-main,
+  body.gallery-leaving {
     animation: none;
   }
 }
@@ -443,5 +485,24 @@
   <main class="gallery-main">
     {{ content }}
   </main>
+  <script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const backLink = document.querySelector(".gallery-header__back");
+
+    if (!backLink) return;
+
+    backLink.addEventListener("click", function (event) {
+      event.preventDefault();
+
+      const destination = backLink.href;
+
+      document.body.classList.add("gallery-leaving");
+
+      window.setTimeout(function () {
+        window.location.href = destination;
+      }, 350);
+    });
+  });
+</script>
 </body>
 </html>
