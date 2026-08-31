@@ -4,8 +4,9 @@
 /*
  * This file controls what is imported from /_sass
  *
- * Note that the files are processed in the order they are imported, so they are partly
-   sorted by the dependencies. Also, the first two lines of the file are required by Jekyll.
+ * Note that the files are processed in the order they are imported,
+ * so they are partly sorted by the dependencies.
+ * Also, the first two lines of the file are required by Jekyll.
  */
 
 @import
@@ -41,47 +42,3 @@
     "vendor/font-awesome/solid",
     "vendor/font-awesome/brands"
 ;
-
-/* Cinematic page transition */
-@view-transition {
-  navigation: auto;
-}
-
-::view-transition-old(root) {
-  z-index: 1;
-  animation: old-page-out 0.8s cubic-bezier(0.4, 0, 0.2, 1) both;
-}
-
-::view-transition-new(root) {
-  z-index: 2;
-  animation: new-page-reveal 1.05s cubic-bezier(0.76, 0, 0.24, 1) both;
-}
-
-@keyframes old-page-out {
-  from {
-    filter: blur(0) brightness(1);
-    transform: scale(1);
-  }
-
-  to {
-    filter: blur(8px) brightness(0.35);
-    transform: scale(0.96);
-  }
-}
-
-@keyframes new-page-reveal {
-  from {
-    clip-path: inset(100% 0 0 0);
-  }
-
-  to {
-    clip-path: inset(0 0 0 0);
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  ::view-transition-old(root),
-  ::view-transition-new(root) {
-    animation-duration: 0.01ms;
-  }
-}
