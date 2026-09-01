@@ -418,7 +418,8 @@ body {
   animation: gallery-content-enter 0.65s 0.08s ease-out both;
 }
 
-.gallery-main {
+.gallery-intro,
+.gallery-grid {
   animation: gallery-content-enter 0.7s 0.12s ease-out both;
 }
 
@@ -461,7 +462,8 @@ body.gallery-leaving {
 @media (prefers-reduced-motion: reduce) {
   body,
   .gallery-header,
-  .gallery-main,
+  .gallery-intro,
+  .gallery-grid
   body.gallery-leaving {
     animation: none;
   }
