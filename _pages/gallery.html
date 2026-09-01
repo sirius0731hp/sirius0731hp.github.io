@@ -5,7 +5,7 @@ permalink: /gallery/
 ---
 
 <section class="gallery-intro">
-  <h1>Selected Works</h1>
+  <h1>Selected Photographs</h1>
 
   <p>
     Photographs from places I have lived in and travelled through.
@@ -159,9 +159,12 @@ permalink: /gallery/
 
     let currentImageIndex = 0;
     let lastFocusedElement = null;
+    let closeTimer = null;
 
 
     function showImage(index) {
+      window.clearTimeout(closeTimer);
+      
       if (!galleryItems.length) return;
 
       currentImageIndex =
@@ -193,11 +196,15 @@ permalink: /gallery/
       lightbox.classList.remove("open");
       lightbox.setAttribute("aria-hidden", "true");
       document.body.classList.remove("lightbox-active");
-
-      lightboxImage.src = "";
-      lightboxImage.alt = "";
-      lightboxCaption.textContent = "";
-
+    
+      closeTimer = window.setTimeout(function () {
+        if (!lightbox.classList.contains("open")) {
+          lightboxImage.src = "";
+          lightboxImage.alt = "";
+          lightboxCaption.textContent = "";
+        }
+      }, 350);
+    
       if (lastFocusedElement) {
         lastFocusedElement.focus();
       }
