@@ -25,7 +25,7 @@
        ========================= */
 
     html {
-      background: #000;
+      background: #fff;
     }
 
     body {
@@ -40,10 +40,16 @@
         Helvetica,
         Arial,
         sans-serif;
+
+      animation: gallery-page-enter 0.55s ease-out both;
     }
 
     body.lightbox-active {
       overflow: hidden;
+    }
+
+    body.gallery-leaving {
+      animation: gallery-page-leave 0.35s ease-in forwards;
     }
 
     button,
@@ -61,6 +67,13 @@
       align-items: center;
       justify-content: space-between;
       padding: 32px 48px;
+
+      animation:
+        gallery-content-enter
+        0.65s
+        0.08s
+        ease-out
+        both;
     }
 
     .gallery-header__title {
@@ -106,6 +119,13 @@
 
     .gallery-intro {
       margin-bottom: 96px;
+
+      animation:
+        gallery-content-enter
+        0.7s
+        0.12s
+        ease-out
+        both;
     }
 
     .gallery-intro h1 {
@@ -137,6 +157,13 @@
       display: grid;
       grid-template-columns: repeat(2, minmax(0, 1fr));
       gap: 88px 32px;
+
+      animation:
+        gallery-content-enter
+        0.7s
+        0.12s
+        ease-out
+        both;
     }
 
     .gallery-item {
@@ -157,7 +184,7 @@
       width: 100%;
       height: auto;
       border: 0;
-      border-radius: 0;
+      border-radius: 2px;
       background: #111;
       transition: opacity 0.3s ease;
     }
@@ -165,11 +192,6 @@
     .gallery-item:hover img,
     .gallery-item:focus-visible img {
       opacity: 0.72;
-    }
-
-    .gallery-item:focus-visible {
-      outline: 1px solid #fff;
-      outline-offset: 6px;
     }
 
     .gallery-item__caption {
@@ -194,25 +216,26 @@
       position: fixed;
       inset: 0;
       z-index: 9999;
+
       display: flex;
       align-items: center;
       justify-content: center;
+
       background: rgba(0, 0, 0, 0.98);
-    
+
       opacity: 0;
       visibility: hidden;
       pointer-events: none;
-    
+
       transition:
         opacity 0.35s ease,
         visibility 0s linear 0.35s;
     }
-    
+
     .gallery-lightbox.open {
       opacity: 1;
       visibility: visible;
       pointer-events: auto;
-    
       transition-delay: 0s;
     }
 
@@ -221,21 +244,29 @@
       flex-direction: column;
       align-items: center;
       justify-content: center;
+
       max-width: 88vw;
       max-height: 92vh;
       margin: 0;
-    
+
       opacity: 0;
       transform: translateY(14px) scale(0.96);
-    
+
       transition:
-        opacity 0.4s ease,
-        transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+        opacity 0.25s ease,
+        transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
     }
-    
+
     .gallery-lightbox.open figure {
       opacity: 1;
       transform: translateY(0) scale(1);
+    }
+
+    /* Photograph-changing state */
+
+    .gallery-lightbox.open figure.is-changing {
+      opacity: 0;
+      transform: translateY(0) scale(0.975);
     }
 
     .gallery-lightbox img {
@@ -243,6 +274,7 @@
       max-width: 88vw;
       max-height: 82vh;
       border: 0;
+      border-radius: 0;
       object-fit: contain;
     }
 
@@ -268,14 +300,18 @@
     .lightbox-next {
       position: fixed;
       z-index: 10000;
+
       padding: 12px;
       border: 0;
       background: transparent;
       color: #666;
+
       font-weight: 300;
       line-height: 1;
+
       cursor: pointer;
       appearance: none;
+
       transition: color 0.2s ease;
     }
 
@@ -286,13 +322,6 @@
     .lightbox-prev:focus-visible,
     .lightbox-next:focus-visible {
       color: #fff;
-    }
-
-    .lightbox-close:focus-visible,
-    .lightbox-prev:focus-visible,
-    .lightbox-next:focus-visible {
-      outline: 1px solid #fff;
-      outline-offset: 2px;
     }
 
     .lightbox-close {
@@ -314,6 +343,84 @@
 
     .lightbox-next {
       right: 20px;
+    }
+
+
+    /* =========================
+       Focus styles
+       ========================= */
+
+    .gallery-item:focus,
+    .gallery-item:active {
+      outline: none;
+      box-shadow: none;
+    }
+
+    .gallery-item:focus-visible {
+      outline: 1px solid #fff;
+      outline-offset: 6px;
+      box-shadow: none;
+    }
+
+    .gallery-header__back:focus {
+      outline: none;
+      box-shadow: none;
+    }
+
+    .gallery-header__back:focus-visible {
+      outline: 1px solid #fff;
+      outline-offset: 5px;
+    }
+
+    .lightbox-close:focus,
+    .lightbox-prev:focus,
+    .lightbox-next:focus {
+      outline: none;
+      box-shadow: none;
+    }
+
+    .lightbox-close:focus-visible,
+    .lightbox-prev:focus-visible,
+    .lightbox-next:focus-visible {
+      outline: 1px solid #fff;
+      outline-offset: 2px;
+    }
+
+
+    /* =========================
+       Page animations
+       ========================= */
+
+    @keyframes gallery-page-enter {
+      from {
+        opacity: 0;
+      }
+
+      to {
+        opacity: 1;
+      }
+    }
+
+    @keyframes gallery-content-enter {
+      from {
+        opacity: 0;
+        transform: translateY(10px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes gallery-page-leave {
+      from {
+        opacity: 1;
+      }
+
+      to {
+        opacity: 0;
+      }
     }
 
 
@@ -354,6 +461,10 @@
         max-height: 76vh;
       }
 
+      .gallery-lightbox figcaption {
+        padding: 0 48px;
+      }
+
       .lightbox-close {
         top: 10px;
         right: 10px;
@@ -373,10 +484,6 @@
       .lightbox-next {
         right: 12px;
       }
-
-      .gallery-lightbox figcaption {
-        padding: 0 48px;
-      }
     }
 
 
@@ -385,113 +492,24 @@
        ========================= */
 
     @media (prefers-reduced-motion: reduce) {
+      body,
+      body.gallery-leaving,
+      .gallery-header,
+      .gallery-intro,
+      .gallery-grid {
+        animation: none;
+      }
+
       .gallery-item img,
       .gallery-header__back,
+      .gallery-lightbox,
+      .gallery-lightbox figure,
       .lightbox-close,
       .lightbox-prev,
       .lightbox-next {
         transition: none;
       }
     }
-   /* Remove the theme's orange focus frame */
-
-.gallery-item:focus,
-.gallery-item:active {
-  outline: none;
-  box-shadow: none;
-}
-
-.gallery-item:focus-visible {
-  outline: 1px solid #fff;
-  outline-offset: 6px;
-  box-shadow: none;
-}
-
-.gallery-header__back:focus {
-  outline: none;
-  box-shadow: none;
-}
-
-.gallery-header__back:focus-visible {
-  outline: 1px solid #fff;
-  outline-offset: 5px;
-}
-
-.lightbox-close:focus,
-.lightbox-prev:focus,
-.lightbox-next:focus {
-  outline: none;
-  box-shadow: none;
-}
-
-.lightbox-close:focus-visible,
-.lightbox-prev:focus-visible,
-.lightbox-next:focus-visible {
-  outline: 1px solid #fff;
-  outline-offset: 2px;
-}
-
-
-/* Gallery-only transition */
-
-body {
-  animation: gallery-page-enter 0.55s ease-out both;
-}
-
-.gallery-header {
-  animation: gallery-content-enter 0.65s 0.08s ease-out both;
-}
-
-.gallery-intro,
-.gallery-grid {
-  animation: gallery-content-enter 0.7s 0.12s ease-out both;
-}
-
-body.gallery-leaving {
-  animation: gallery-page-leave 0.35s ease-in forwards;
-}
-
-@keyframes gallery-page-enter {
-  from {
-    opacity: 0;
-  }
-
-  to {
-    opacity: 1;
-  }
-}
-
-@keyframes gallery-content-enter {
-  from {
-    opacity: 0;
-    transform: translateY(10px);
-  }
-
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-@keyframes gallery-page-leave {
-  from {
-    opacity: 1;
-  }
-
-  to {
-    opacity: 0;
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  body,
-  .gallery-header,
-  .gallery-intro,
-  .gallery-grid
-  body.gallery-leaving {
-    animation: none;
-  }
-}
   </style>
 </head>
 
@@ -511,24 +529,26 @@ body.gallery-leaving {
   <main class="gallery-main">
     {{ content }}
   </main>
+
   <script>
-  document.addEventListener("DOMContentLoaded", function () {
-    const backLink = document.querySelector(".gallery-header__back");
+    document.addEventListener("DOMContentLoaded", function () {
+      const backLink =
+        document.querySelector(".gallery-header__back");
 
-    if (!backLink) return;
+      if (!backLink) return;
 
-    backLink.addEventListener("click", function (event) {
-      event.preventDefault();
+      backLink.addEventListener("click", function (event) {
+        event.preventDefault();
 
-      const destination = backLink.href;
+        const destination = backLink.href;
 
-      document.body.classList.add("gallery-leaving");
+        document.body.classList.add("gallery-leaving");
 
-      window.setTimeout(function () {
-        window.location.href = destination;
-      }, 350);
+        window.setTimeout(function () {
+          window.location.href = destination;
+        }, 350);
+      });
     });
-  });
-</script>
+  </script>
 </body>
 </html>
